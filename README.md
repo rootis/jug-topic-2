@@ -1,2 +1,2 @@
-# jug-topic-2
-Spring Framework 5
+# Kaunas Java Users Group
+# Spring Framework 5
