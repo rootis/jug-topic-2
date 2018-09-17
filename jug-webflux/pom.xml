@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>eu.eagercode</groupId>
-    <artifactId>jug-spring-webflux</artifactId>
+    <artifactId>jug-webflux</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
