@@ -1,22 +1,20 @@
-package eu.eagercode.jugreactor;
+package eu.eagercode.jugwebflux;
 
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.IntStream;
+import org.junit.Ignore;
 import org.junit.Test;
 import reactor.core.publisher.ConnectableFlux;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.time.Duration;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 import reactor.core.publisher.UnicastProcessor;
 import reactor.core.scheduler.Schedulers;
 
-public class ApplicationTest {
+public class ReactorTest {
 
     private List<String> words = Arrays.asList("First", "Second", "Third", "Forth", "Fifth", "Sixth",
         "Seventh", "Eighth", "Ninth", "Tenth");
@@ -55,10 +53,10 @@ public class ApplicationTest {
     @Test
     public void sortLetters() {
         Flux<String> letters = Flux.fromIterable(words)
-                .flatMap(word -> Flux.fromArray(word.split("")))
-                .distinct()
-                .sort(Comparator.reverseOrder())
-                .zipWith(Flux.range(1, Integer.MAX_VALUE), (s, i) -> String.format("%d. %s", i, s));
+            .flatMap(word -> Flux.fromArray(word.split("")))
+            .distinct()
+            .sort(Comparator.reverseOrder())
+            .zipWith(Flux.range(1, Integer.MAX_VALUE), (s, i) -> String.format("%d. %s", i, s));
 
         letters.subscribe(System.out::println);
     }
@@ -66,11 +64,11 @@ public class ApplicationTest {
     @Test
     public void countLetters() {
         Flux<String> letters = Flux.fromIterable(words)
-                .flatMap(word -> Flux.fromArray(word.split("")))
-                .sort()
-                .groupBy(String::toString)
-                .flatMap(group -> Mono.zip(Mono.just(group.key()), group.count()))
-                .map(keyAndCount -> String.format("%s - %d", keyAndCount.getT1(), keyAndCount.getT2()));
+            .flatMap(word -> Flux.fromArray(word.split("")))
+            .sort()
+            .groupBy(String::toString)
+            .flatMap(group -> Mono.zip(Mono.just(group.key()), group.count()))
+            .map(keyAndCount -> String.format("%s - %d", keyAndCount.getT1(), keyAndCount.getT2()));
 
         letters.subscribe(System.out::println);
     }
@@ -78,7 +76,7 @@ public class ApplicationTest {
     @Test
     public void delay() {
         Flux<String> flux = Mono.just("Zero").concatWith(
-                Flux.fromIterable(words)
+            Flux.fromIterable(words)
                 .delaySubscription(Duration.ofMillis(0)));
 
         flux.log().subscribe(System.out::println);
@@ -87,7 +85,7 @@ public class ApplicationTest {
     @Test
     public void delayBlockLast() {
         Flux<String> flux = Mono.just("Zero").concatWith(
-                Flux.fromIterable(words)
+            Flux.fromIterable(words)
                 .delaySubscription(Duration.ofMillis(3000)));
 
         flux.subscribe(System.out::println);
@@ -98,7 +96,7 @@ public class ApplicationTest {
     @Test
     public void delayToStream() {
         Flux<String> flux = Mono.just("Zero").concatWith(
-                Flux.fromIterable(words)
+            Flux.fromIterable(words)
                 .delaySubscription(Duration.ofMillis(2000)));
 
         flux.toStream().forEach(System.out::println);
@@ -107,9 +105,9 @@ public class ApplicationTest {
     @Test
     public void first() {
         Mono<String> a = Mono.just("Slow mono")
-                .delaySubscription(Duration.ofMillis(300));
+            .delaySubscription(Duration.ofMillis(300));
         Flux<String> b = Flux.just("Very", "Fast", "Flux")
-                .delayElements(Duration.ofMillis(200));
+            .delayElements(Duration.ofMillis(200));
 
         Flux.first(b, a).toIterable().forEach(System.out::println);
     }
@@ -117,10 +115,10 @@ public class ApplicationTest {
     @Test
     public void differentSpeed() {
         Flux<String> a = Flux.just("1. Slow", "1. Motion", "1. Words")
-                .delayElements(Duration.ofMillis(200));
+            .delayElements(Duration.ofMillis(200));
         a.subscribe(System.out::println);
         Flux<String> b = Flux.just("2. Very", "2. Fast", "2. Flux")
-                .delayElements(Duration.ofMillis(600));
+            .delayElements(Duration.ofMillis(600));
         b.subscribe(System.out::println);
 
         a.blockLast();
@@ -128,6 +126,7 @@ public class ApplicationTest {
     }
 
     @Test
+    @Ignore
     public void connectableFlux() {
         ConnectableFlux<Object> publish = Flux.create(emitter ->{
             while (true) {
