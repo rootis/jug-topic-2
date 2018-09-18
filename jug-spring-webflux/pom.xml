@@ -16,6 +16,7 @@
         <log4j-core.version>2.11.1</log4j-core.version>
         <jackson-databind.version>2.9.6</jackson-databind.version>
         <spring.version>5.0.5.RELEASE</spring.version>
+        <junit.version>4.12</junit.version>
     </properties>
 
     <dependencyManagement>
@@ -64,6 +65,13 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-webflux</artifactId>
             <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

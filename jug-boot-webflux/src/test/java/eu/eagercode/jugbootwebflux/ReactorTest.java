@@ -1,4 +1,4 @@
-package eu.eagercode.jugwebflux;
+package eu.eagercode.jugbootwebflux;
 
 import java.time.Duration;
 import java.util.ArrayList;
